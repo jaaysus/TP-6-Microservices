@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seed Courses and Professors</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>Seed Courses and Professors</h2>
+    <button class="btn btn-primary" id="seedButton">Seed Data</button>
+    <div id="response" class="mt-3"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const courseURL = 'http://localhost:5001/api/courses/add';
+    const teacherURL = 'http://localhost:5003/api/teachers/add';
+
+    const courses = [
+      { titre: 'Math 101', description: 'Basic Mathematics', prix: 100 },
+      { titre: 'Science 101', description: 'Introduction to Science', prix: 120 },
+      { titre: 'History 101', description: 'World History', prix: 110 },
+      { titre: 'Literature 101', description: 'Introduction to Literature', prix: 90 },
+      { titre: 'Physics 101', description: 'Basic Physics', prix: 130 },
+      { titre: 'Chemistry 101', description: 'Basic Chemistry', prix: 115 },
+      { titre: 'Biology 101', description: 'Introduction to Biology', prix: 105 },
+      { titre: 'Geography 101', description: 'Introduction to Geography', prix: 95 },
+      { titre: 'Art 101', description: 'Introduction to Art', prix: 80 },
+      { titre: 'Philosophy 101', description: 'Basic Philosophy', prix: 140 }
+    ];
+
+    const professors = [
+      { name: 'Professor A', bio: 'Experienced in Math and Science', cours: [] },
+      { name: 'Professor B', bio: 'History and Literature Specialist', cours: [] },
+      { name: 'Professor C', bio: 'Physics and Chemistry Expert', cours: [] },
+      { name: 'Professor D', bio: 'Art and Philosophy Instructor', cours: [] },
+      { name: 'Professor E', bio: 'Geography and Biology Teacher', cours: [] },
+      { name: 'Professor F', bio: 'Mathematics and Physics Specialist', cours: [] },
+      { name: 'Professor G', bio: 'Literature and History Teacher', cours: [] },
+      { name: 'Professor H', bio: 'Expert in Biology and Chemistry', cours: [] },
+      { name: 'Professor I', bio: 'Philosophy and Art Educator', cours: [] },
+      { name: 'Professor J', bio: 'Geography and Science Instructor', cours: [] }
+    ];
+
+    document.getElementById('seedButton').addEventListener('click', async () => {
+      try {
+        for (let course of courses) {
+          await axios.post(courseURL, course);
+        }
+        for (let professor of professors) {
+          await axios.post(teacherURL, professor);
+        }
+
+        document.getElementById('response').innerHTML = `<div class="alert alert-success">Courses and Professors seeded successfully!</div>`;
+      } catch (err) {
+        document.getElementById('response').innerHTML = `<div class="alert alert-danger">Error: ${err.response ? err.response.data.error : err.message}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
